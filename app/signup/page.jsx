@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { AuroraBackground } from "../ui/aurora-background";
  
-function AuroraBackgroundDemo() {
+export default function AuroraBackgroundDemo() {
   return (
     <AuroraBackground>
       <motion.div
