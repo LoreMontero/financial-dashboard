@@ -1,0 +1,63 @@
+/* Main navbar container */
+.navbar {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.navbarLogo {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  background-color: black; /* Add black background to blend with the navbar */
+  padding: 5px;            /* Add some padding for a clean look */
+  border-radius: 50%;      /* Round shape, optional */
+}
+
+.logoText {
+  margin-left: 10px;
+  font-size: 1.5rem;
+  color: white;            /* Ensure the text is white to match the navbar */
+}
+
+.navbarMenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbarItem {
+  margin-left: 20px;
+  color: white;   
+           /* Ensure the menu items are white */
+}
+
+.navbarItem:hover {
+  background-color: #444; /* Change this color to your desired highlight */
+  color: #ffffff; /* Optional: change text color on hover */
+  border-radius: 5px; /* Optional: add slight rounding to corners */
+}
+
+/* Right side icons and profile */
+.navbarIcons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.iconItem img,
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.username {
+  font-size: 14px;
+}
+
