@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const { username, password, email, dob } = req.body;
 
     console.log('Received data:', req.body);
-    
+
     try {
       // Check if the user already exists
       const existingUser = await User.findOne({ where: { email } });
