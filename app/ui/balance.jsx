@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-export function Balance({ balance }) {
+export default function Balance({ balance }) {
   // State to track hover
   const [isHovered, setIsHovered] = useState(false);
 
