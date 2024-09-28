@@ -1,7 +1,6 @@
 "use client"; // Required for using React hooks
 
 import { useState } from 'react';
-import styles from "./page.module.css"; // Assuming you have a CSS module for styling
 
 export default function AuthPage() {
   const [username, setUsername] = useState('');
@@ -80,7 +79,7 @@ export default function AuthPage() {
 
   if (isLoggedIn) {
     return (
-      <div className={styles.container}>
+      <div className="">
         <h1>Login Complete</h1>
         <p>Welcome, {username}!</p> {/* Display a welcome message */}
         <button onClick={() => window.location.href = '/dashboard'}>Go to Dashboard</button>
@@ -89,7 +88,7 @@ export default function AuthPage() {
   }
 
   return (
-    <main className={styles.container}>
+    <main className="">
       <h1>{isSignUp ? 'Sign Up' : 'Login'}</h1>
       <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
         <div>
