@@ -1,95 +1,166 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"; // Required for using React hooks
 
-export default function Home() {
+import { useState } from 'react';
+import styles from "./page.module.css"; // Assuming you have a CSS module for styling
+
+export default function AuthPage() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState(''); // State for confirm password
+  const [email, setEmail] = useState(''); // State for email
+  const [dob, setDob] = useState(''); // State for date of birth
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // New state to manage login status
+  const [isSignUp, setIsSignUp] = useState(false); // New state to manage sign-up form
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Set loading state to true
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Set login status to true on successful login
+        setIsLoggedIn(true);
+      } else {
+        setError(data.message || 'Invalid username or password');
+      }
+    } catch (err) {
+      console.error('An error occurred:', err);
+      setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Set loading state to true
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, email, dob }), // Include email and dob
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Optionally log in the user immediately after sign-up
+        setIsLoggedIn(true);
+      } else {
+        setError(data.message || 'Sign-up failed');
+      }
+    } catch (err) {
+      console.error('An error occurred:', err);
+      setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
+  if (isLoggedIn) {
+    return (
+      <div className={styles.container}>
+        <h1>Login Complete</h1>
+        <p>Welcome, {username}!</p> {/* Display a welcome message */}
+        <button onClick={() => window.location.href = '/dashboard'}>Go to Dashboard</button>
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <div className={styles.container}>
+      <h1>{isSignUp ? 'Sign Up' : 'Login'}</h1>
+      <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
+        <div>
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </div>
+
+        {isSignUp && (
+          <>
+            <div>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="dob">Date of Birth:</label>
+              <input
+                type="date"
+                id="dob"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+          </>
+        )}
+
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="submit" disabled={loading}>{isSignUp ? 'Sign Up' : 'Login'}</button>
+      </form>
+      
+      <button onClick={() => setIsSignUp(!isSignUp)} style={{ marginTop: '10px' }}>
+        {isSignUp ? 'Already have an account? Login' : 'Don’t have an account? Sign Up'}
+      </button>
     </div>
   );
 }
+
+
+
