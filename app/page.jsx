@@ -87,7 +87,14 @@ export default function AuthPage() {
     );
   }
 
+export default function Home({ balance }) {
   return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <Balance balance={15.00} /> {/* Use the Balance component */}
+      </main>
+      <footer className={styles.footer}></footer>
+    </div>
     <main className="">
       <h1>{isSignUp ? 'Sign Up' : 'Login'}</h1>
       <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
