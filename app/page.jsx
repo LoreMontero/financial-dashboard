@@ -2,6 +2,9 @@
 
 import './page.css';
 import { useState } from 'react';
+import { motion } from "framer-motion";
+import React from "react";
+import { AuroraBackground } from "./ui/aurora-background";
 
 export default function AuthPage() {
   const [username, setUsername] = useState('');
@@ -83,7 +86,17 @@ export default function AuthPage() {
     }
      
   return (
-    <main className="main-container">
+    <AuroraBackground className='bg-zinc-900 dark'>
+      <motion.div
+        initial={{ opacity: 0.0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.8,
+          ease: "easeInOut",
+        }}
+        className="relative flex flex-col gap-4 items-center justify-center px-4"
+      >
       <div className="form-container center">
         <h1>{isSignUp ? 'Sign Up' : 'Login'}</h1>
         <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
@@ -157,11 +170,7 @@ export default function AuthPage() {
   
           {/* Sign-Up Button */}
           {isSignUp && (
-            <button type="submit" disabled={loading}style={{
-              backgroundColor: '#FF00E6', // Set button background to #FF00E6
-              color: '#FFFFFF', // Set text color to white
-              border: '2px solid #FF00E6' // Keep the border the same color as the background
-            }}>
+            <button type="submit" disabled={loading}>
               Sign Up
             </button>
           )}
@@ -199,7 +208,8 @@ export default function AuthPage() {
             </span>
           </p>
         )}
-      </div>
-    </main>
+        </div>
+        </motion.div>
+      </AuroraBackground>
   )
-            };
+}
