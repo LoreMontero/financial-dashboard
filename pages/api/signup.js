@@ -9,15 +9,18 @@ export default async function handler(req, res) {
 
     try {
       // Check if the user already exists
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) {
+      const existingUser1 = await User.findOne({ where: { email } });
+      const existingUser2 = await User.findOne({ where: { username } });
+      if (existingUser1) {
         return res.status(400).json({ message: 'Email already exists' });
       }
-
+      if (existingUser2) {
+        return res.status(400).json({ message: 'Username already exists' });
+      }
       // Create a new user
       const newUser = await User.create({
         username,
-        password, // Make sure the password is hashed in production
+        password, 
         email,
         dob,
       });
