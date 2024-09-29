@@ -50,8 +50,10 @@ input {
     max-width: 100%; 
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px; 
+    border-radius: 4px;
+    border: none;
+    background-color: #3e3e3e;
+    color: #fbf5e9;
 }
 
 button {
