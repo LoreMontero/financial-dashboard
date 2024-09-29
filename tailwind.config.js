@@ -2,46 +2,6 @@ const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    // your paths
-    "./src/**/*.{ts,tsx}",
-  ],
-  darkMode: "class",
-  theme: {
-    extend: {
-      animation: {
-        aurora: "aurora 60s linear infinite",
-      },
-      keyframes: {
-        aurora: {
-          from: {
-            backgroundPosition: "50% 50%, 50% 50%",
-          },
-          to: {
-            backgroundPosition: "350% 50%, 350% 50%",
-          },
-        },
-      },
-    },
-  },
-  plugins: [addVariablesForColors],
-};
-
-// This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
-function addVariablesForColors({
-  addBase,
-  theme
-}) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(Object.entries(allColors).map(([key, val]) => [`--${key}`, val]));
-
-  addBase({
-    ":root": newVars,
-  });
-}
-
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -62,6 +22,12 @@ module.exports = {
       },
     },
     extend: {
+      
+      
+      fontFamily: {
+        sans: ["var(--geist-sans)"],
+        mono: ["var(--font-geist-mono)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -103,6 +69,14 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -113,10 +87,45 @@ module.exports = {
         },
       },
       animation: {
+        aurora: "aurora 60s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [addVariablesForColors, require("tailwindcss-animate")],
 }
+
+// This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
+function addVariablesForColors({
+  addBase,
+  theme
+}) {
+  let allColors = flattenColorPalette(theme("colors"));
+  let newVars = Object.fromEntries(Object.entries(allColors).map(([key, val]) => [`--${key}`, val]));
+
+  newVars["--border"] = theme("colors.border");
+  newVars["--input"] = theme("colors.input");
+  newVars["--ring"] = theme("colors.ring");
+  newVars["--background"] = theme("colors.background");
+  newVars["--foreground"] = theme("colors.foreground");
+  newVars["--primary"] = theme("colors.primary.DEFAULT");
+  newVars["--primary-foreground"] = theme("colors.primary.foreground");
+  newVars["--secondary"] = theme("colors.secondary.DEFAULT");
+  newVars["--secondary-foreground"] = theme("colors.secondary.foreground");
+  newVars["--destructive"] = theme("colors.destructive.DEFAULT");
+  newVars["--destructive-foreground"] = theme("colors.destructive.foreground");
+  newVars["--muted"] = theme("colors.muted.DEFAULT");
+  newVars["--muted-foreground"] = theme("colors.muted.foreground");
+  newVars["--accent"] = theme("colors.accent.DEFAULT");
+  newVars["--accent-foreground"] = theme("colors.accent.foreground");
+  newVars["--popover"] = theme("colors.popover.DEFAULT");
+  newVars["--popover-foreground"] = theme("colors.popover.foreground");
+  newVars["--card"] = theme("colors.card.DEFAULT");
+  newVars["--card-foreground"] = theme("colors.card.foreground");
+
+  addBase({
+    ":root": newVars,
+  });
+}
+

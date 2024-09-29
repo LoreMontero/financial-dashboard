@@ -6,7 +6,7 @@ import { AuroraBackground } from "../ui/aurora-background";
  
 export default function AuroraBackgroundDemo() {
   return (
-    <AuroraBackground>
+    <AuroraBackground className='bg-zinc-900 dark'>
       <motion.div
         initial={{ opacity: 0.0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
