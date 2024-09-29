@@ -14,7 +14,7 @@ const Navbar = () => {
           height={50} // Adjust the height as needed
           width={50}  // Adjust the width as needed
         />
-        <span className={styles.logoText}>SHellFi</span>
+        <span className={styles.logoText}>ShellFi</span>
       </div>
 
       <ul className={styles.navbarMenu}>
